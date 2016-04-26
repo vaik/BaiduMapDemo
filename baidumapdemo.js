@@ -4,10 +4,39 @@
 var map = new BMap.Map("showDemo"),
     point = new BMap.Point(113.959005,22.539265);
     //marker = new BMap.Marker(point);
-map.centerAndZoom(point,18);
+map.centerAndZoom(point,16);
 map.enableScrollWheelZoom();
+
+var polygon = new BMap.Polygon();
+polygon.setStrokeColor("#6B8BAD");
+polygon.setFillColor("#FBFBFC");
+polygon.setStrokeOpacity(0.8);
+
+var points = [];
 map.addEventListener("click",function(e){
     console.log(e.point.lng+','+ e.point.lat);
+    var newPoint = new BMap.Point(e.point.lng,e.point.lat);
+    points.push(newPoint);
+
+    polygon.setPath(points);
+    map.addOverlay(polygon);
+
+});
+/*
+
+* points：点数组
+* hourhand：Number 1 顺时针，2 逆时针 默认1
+ */
+function SortPointByCircle(points,hourhand){
+
+}
+
+
+map.addEventListener("rightclick",function(e){
+    points.pop();
+    polygon.setPath(points);
+    map.addOverlay(polygon);
+
 });
 //map.addOverlay(marker);
 //marker.setAnimation(BMAP_ANIMATION_BOUNCE);
@@ -49,26 +78,14 @@ marker.addEventListener("click", function(e){
     searchInfoWindow.open(marker);
 })
 map.addOverlay(marker); //在地图中添加marker
-//样式1
-var searchInfoWindow1 = new BMapLib.SearchInfoWindow(map, "信息框1内容", {
-    title: "信息框1", //标题
-    panel : "panel", //检索结果面板
-    enableAutoPan : true, //自动平移
-    searchTypes :[
-        BMAPLIB_TAB_FROM_HERE, //从这里出发
-        BMAPLIB_TAB_SEARCH   //周边检索
-    ]
-});
-function openInfoWindow1() {
-    searchInfoWindow1.open(new BMap.Point(116.319852,40.057031));
-}
-//样式2
-var searchInfoWindow2 = new BMapLib.SearchInfoWindow(map, "信息框2内容", {
-    title: "信息框2", //标题
-    panel : "panel", //检索结果面板
-    enableAutoPan : true, //自动平移
-    searchTypes :[
-        BMAPLIB_TAB_SEARCH   //周边检索
-    ]
-});
-fun
+
+var circle = new BMap.Circle(point, 1000);
+circle.setStrokeColor("red");
+circle.setStrokeStyle("dashed");
+circle.enableEditing();
+map.addOverlay(circle);
+
+
+
+
+
